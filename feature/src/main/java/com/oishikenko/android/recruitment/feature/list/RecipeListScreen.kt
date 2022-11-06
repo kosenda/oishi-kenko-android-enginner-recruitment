@@ -63,6 +63,7 @@ fun RecipeListScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(innerPadding)
+                .padding(top = 8.dp)
                 .consumedWindowInsets(innerPadding)
         ) {
             items(cookingRecords) {
