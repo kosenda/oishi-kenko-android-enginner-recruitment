@@ -10,14 +10,18 @@ private val DarkColorPalette = darkColors(
     primary = mikanOrange,
     primaryVariant = onionBeige,
     secondary = blueberryBlue,
-    background = backgroundDark
+    background = backgroundDark,
+    onBackground = textWeakColorDark,  // 弱い白文字として使用
+    onSurface = textStrongColorDark    // 強い白文字として使用
 )
 
 private val LightColorPalette = lightColors(
     primary = apricotOrange,
     primaryVariant = onionBeige,
     secondary = blueberryBlue,
-    background = backgroundLight
+    background = backgroundLight,
+    onBackground = textWeakColorLight, // 弱い黒文字として使用
+    onSurface = textStrongColorLight   // 強い黒文字として使用
 )
 
 @Composable
