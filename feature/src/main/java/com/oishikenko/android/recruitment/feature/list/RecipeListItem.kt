@@ -1,18 +1,25 @@
 package com.oishikenko.android.recruitment.feature.list
 
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.oishikenko.android.recruitment.data.model.CookingRecord
+import com.oishikenko.android.recruitment.feature.list.convert.convertRecipeType
+import com.oishikenko.android.recruitment.feature.list.convert.convertRecordedAt
 
 @Composable
 fun RecipeListItem(
@@ -21,19 +28,42 @@ fun RecipeListItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(
-                horizontal = 16.dp,
-                vertical = 8.dp,
-            ),
+            .padding(start = 16.dp, end = 16.dp, top = 8.dp)
+            .border(
+                width = 1.dp,
+                color = Color(0xFFDCE0E0),
+                shape = RoundedCornerShape(8.dp))
     ) {
         AsyncImage(
             model = cookingRecord.imageUrl,
             contentDescription = cookingRecord.comment,
             contentScale = ContentScale.Crop,
             modifier = Modifier
-                .size(96.dp)
-                .clip(RoundedCornerShape(4.dp)),
+                .size(64.dp)
+                .clip(RoundedCornerShape(topStart = 8.dp, bottomStart = 8.dp))
         )
+        Box(
+            modifier = Modifier.padding(start = 8.dp)
+        ) {
+            Text(
+                text = convertRecipeType(cookingRecord.recipeType),
+                modifier = Modifier.padding(top = 4.dp),
+                textAlign = TextAlign.Justify,
+                style = MaterialTheme.typography.body2,
+                color = MaterialTheme.colors.onSurface,
+                fontWeight = FontWeight.Bold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+            Text(
+                modifier = Modifier.padding(top = 24.dp),
+                text = convertRecordedAt(cookingRecord.recordedAt),
+                textAlign = TextAlign.Justify,
+                lineHeight = 15.sp,
+                style = MaterialTheme.typography.body2,
+                color = MaterialTheme.colors.onBackground,
+            )
+        }
     }
 }
 
