@@ -11,11 +11,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.oishikenko.android.recruitment.data.model.CookingRecord
 import com.oishikenko.android.recruitment.feature.list.convert.convertRecipeType
@@ -29,6 +27,7 @@ fun RecipeListItem(
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 16.dp, end = 16.dp, top = 8.dp)
+            .height(64.dp)
             .border(
                 width = 1.dp,
                 color = Color(0xFFDCE0E0),
@@ -47,8 +46,6 @@ fun RecipeListItem(
         ) {
             Text(
                 text = convertRecipeType(cookingRecord.recipeType),
-                modifier = Modifier.padding(top = 4.dp),
-                textAlign = TextAlign.Justify,
                 style = MaterialTheme.typography.body2,
                 color = MaterialTheme.colors.onSurface,
                 fontWeight = FontWeight.Bold,
@@ -56,10 +53,8 @@ fun RecipeListItem(
                 overflow = TextOverflow.Ellipsis,
             )
             Text(
-                modifier = Modifier.padding(top = 24.dp),
+                modifier = Modifier.padding(top = 20.dp),
                 text = convertRecordedAt(cookingRecord.recordedAt),
-                textAlign = TextAlign.Justify,
-                lineHeight = 15.sp,
                 style = MaterialTheme.typography.body2,
                 color = MaterialTheme.colors.onBackground,
             )
