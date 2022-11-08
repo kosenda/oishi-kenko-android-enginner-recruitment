@@ -16,19 +16,25 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.oishikenko.android.recruitment.feature.R
+import com.oishikenko.android.recruitment.feature.navigation.NavigationRoute
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun RecipeListScreen(
-    viewModel: RecipeListViewModel = hiltViewModel()
+    viewModel: RecipeListViewModel = hiltViewModel(),
+    navController: NavController
 ) {
     val cookingRecords = viewModel.recordPager.collectAsLazyPagingItems()
     val lazyListState = rememberLazyListState()
@@ -81,7 +87,18 @@ fun RecipeListScreen(
             ) {
                 items(cookingRecords.itemCount) { index ->
                     cookingRecords[index]?.let {
-                        RecipeListItem(it)
+                        val encodeUrl = URLEncoder.encode(it.imageUrl, StandardCharsets.UTF_8.toString())
+                        RecipeListItem(it) {
+                            navController.navigate(
+                                NavigationRoute.RecipeDetail.route +
+                                        "/$encodeUrl" +
+                                        "/${it.comment}" +
+                                        "/${it.recipeType}" +
+                                        "/${it.recordedAt}"
+                            ) {
+                                popUpTo(NavigationRoute.RecipeDetail.route)
+                            }
+                        }
                     }
                 }
                 item { Spacer(modifier = Modifier.height(60.dp)) }
@@ -101,11 +118,6 @@ fun RecipeListScreen(
                     painter = painterResource(id = R.drawable.circle_surface),
                     contentDescription = "now loading"
                 )
-//                CircularProgressIndicator(
-//                    modifier = Modifier.size(48.dp),
-//                    color = Color(0xFF063A77),
-//                    strokeWidth = 4.dp
-//                )
             }
         }
     }
@@ -115,7 +127,7 @@ fun RecipeListScreen(
 @Composable
 fun PreviewRecipeListScreenDark(){
     MaterialTheme {
-        RecipeListScreen()
+        RecipeListScreen(navController = NavController(LocalContext.current))
     }
 }
 
@@ -124,6 +136,6 @@ fun PreviewRecipeListScreenDark(){
 @Composable
 fun PreviewRecipeListScreenLight(){
     MaterialTheme {
-        RecipeListScreen()
+        RecipeListScreen(navController = NavController(LocalContext.current))
     }
 }
