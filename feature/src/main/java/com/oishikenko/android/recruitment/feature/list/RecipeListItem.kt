@@ -1,6 +1,7 @@
 package com.oishikenko.android.recruitment.feature.list
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
@@ -21,12 +22,14 @@ import com.oishikenko.android.recruitment.feature.list.convert.convertRecordedAt
 
 @Composable
 fun RecipeListItem(
-    cookingRecord: CookingRecord
+    cookingRecord: CookingRecord,
+    onClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 16.dp, end = 16.dp, top = 8.dp)
+            .clickable(onClick = onClick)
             .height(64.dp)
             .border(
                 width = 1.dp,
@@ -71,6 +74,7 @@ fun PreviewRecipeListItem() {
             comment = "豚肉のコクとごぼうの香り、野菜の甘みで奥行きのある味わい。",
             recipeType = "soup",
             recordedAt = "2018-05-01 17:57:31"
-        )
+        ),
+        onClick = {}
     )
 }
