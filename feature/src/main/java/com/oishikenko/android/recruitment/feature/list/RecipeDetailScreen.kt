@@ -24,6 +24,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.oishikenko.android.recruitment.feature.R
 import com.oishikenko.android.recruitment.feature.list.convert.convertRecipeType
+import com.oishikenko.android.recruitment.feature.list.convert.convertRecordedAt
 
 @Composable
 fun RecipeDetailScreen(
@@ -131,7 +132,7 @@ fun RecipeDetailScreen(
                 modifier = Modifier
                     .padding(top = 4.dp, bottom = 8.dp, end = 16.dp)
                     .fillMaxWidth(),
-                text = record_at,
+                text = convertRecordedAt(record_at),
                 textAlign = TextAlign.End,
                 color = MaterialTheme.colors.onBackground,
                 style = MaterialTheme.typography.subtitle2
