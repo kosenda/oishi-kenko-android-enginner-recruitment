@@ -1,4 +1,4 @@
-package com.oishikenko.android.recruitment.feature.list
+package com.oishikenko.android.recruitment.feature.detail
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

@@ -9,8 +9,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.oishikenko.android.recruitment.feature.list.RecipeDetailScreen
+import com.oishikenko.android.recruitment.feature.detail.RecipeDetailScreen
 import com.oishikenko.android.recruitment.feature.list.RecipeListScreen
+import com.oishikenko.android.recruitment.feature.prototype.MyRecipeListScreen
 
 @Composable
 fun Navigation() {
@@ -50,5 +51,10 @@ fun Navigation() {
                 navController = navController
             )
         }
+// プロトタイプ ----------------------------------------------------------- START
+        composable(route = NavigationRoute.MYRecipeList.route) {
+            MyRecipeListScreen(navController = navController)
+        }
+// プロトタイプ ----------------------------------------------------------- END
     }
 }
