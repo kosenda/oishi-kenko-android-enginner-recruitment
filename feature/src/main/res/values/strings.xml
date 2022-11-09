@@ -2,4 +2,6 @@
 <resources>
     <string name="cooking_records_title">わたしの料理記録</string>
     <string name="recipe_detail_title">レシピ</string>
+    <string name="my_records_album_title">料理記録アルバム</string>
+    <string name="side_button_text_cooking_records_title">MY</string>
 </resources>

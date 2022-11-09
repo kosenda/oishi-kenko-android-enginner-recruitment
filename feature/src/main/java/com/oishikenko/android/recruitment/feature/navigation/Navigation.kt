@@ -1,17 +1,31 @@
 package com.oishikenko.android.recruitment.feature.navigation
 
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.oishikenko.android.recruitment.feature.list.RecipeDetailScreen
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.oishikenko.android.recruitment.feature.detail.RecipeDetailScreen
 import com.oishikenko.android.recruitment.feature.list.RecipeListScreen
+import com.oishikenko.android.recruitment.feature.prototype.MyRecipeListScreen
 
 @Composable
 fun Navigation() {
     val navController = rememberNavController()
+
+    val systemUiController = rememberSystemUiController()
+    val systemUiColor = MaterialTheme.colors.background
+    SideEffect {
+        systemUiController.run {
+            setStatusBarColor(systemUiColor)
+            setNavigationBarColor(systemUiColor)
+        }
+    }
+
     NavHost(
         navController = navController,
         startDestination =  NavigationRoute.RecipeList.route
@@ -37,5 +51,10 @@ fun Navigation() {
                 navController = navController
             )
         }
+// プロトタイプ ----------------------------------------------------------- START
+        composable(route = NavigationRoute.MYRecipeList.route) {
+            MyRecipeListScreen(navController = navController)
+        }
+// プロトタイプ ----------------------------------------------------------- END
     }
 }

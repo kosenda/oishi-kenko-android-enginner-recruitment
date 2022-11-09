@@ -1,20 +1,22 @@
-package com.oishikenko.android.recruitment.feature.list
+package com.oishikenko.android.recruitment.feature.prototype
 
-import android.content.res.Configuration.UI_MODE_NIGHT_NO
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import android.content.res.Configuration
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -31,12 +33,12 @@ import java.nio.charset.StandardCharsets
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun RecipeListScreen(
-    viewModel: RecipeListViewModel = hiltViewModel(),
+fun MyRecipeListScreen(
+    viewModel: MyRecipeListViewModel = hiltViewModel(),
     navController: NavController
 ) {
     val cookingRecords = viewModel.recordPager.collectAsLazyPagingItems()
-    val lazyListState = rememberLazyListState()
+    val lazyGridState = rememberLazyGridState()
     val infiniteTransition = rememberInfiniteTransition()
     val angle by infiniteTransition.animateFloat(
         initialValue = 0f,
@@ -45,6 +47,7 @@ fun RecipeListScreen(
             animation = tween(800),
             repeatMode = RepeatMode.Restart)
     )
+    val halfScreenWidth = (LocalConfiguration.current.screenWidthDp / 2).dp
 
     Scaffold(
         backgroundColor = MaterialTheme.colors.background,
@@ -57,11 +60,26 @@ fun RecipeListScreen(
                 Row(
                     modifier = Modifier.fillMaxSize(),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
+                    horizontalArrangement = Arrangement.Start
                 ) {
+                    Box(
+                        modifier = Modifier
+                            .clickable { navController.popBackStack() }
+                            .size(48.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            modifier = Modifier
+                                .size(24.dp),
+                            imageVector = Icons.Filled.ArrowBack,
+                            contentDescription = "go to pre screen",
+                            tint = MaterialTheme.colors.onSurface
+                        )
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
                     Text(
                         modifier = Modifier.padding(end = 8.dp),
-                        text = stringResource(id = R.string.cooking_records_title),
+                        text = stringResource(id = R.string.my_records_album_title),
                         color = MaterialTheme.colors.onSurface,
                         style = MaterialTheme.typography.h6,
                         fontWeight = FontWeight.Bold
@@ -71,43 +89,30 @@ fun RecipeListScreen(
                         painter = painterResource(id = R.drawable.my_cooking_record_header),
                         contentDescription = null
                     )
-
-// プロトタイプ ----------------------------------------------------------- START
-                    Text(
-                        modifier = Modifier
-                            .padding(start = 20.dp)
-                            .fillMaxHeight()
-                            .clickable {
-                                navController.navigate(
-                                    NavigationRoute.MYRecipeList.route
-                                ) {
-                                    popUpTo(NavigationRoute.MYRecipeList.route)
-                                }
-                            },
-                        text = stringResource(
-                            id = R.string.side_button_text_cooking_records_title),
-                        color = MaterialTheme.colors.primary,
-                        style = MaterialTheme.typography.h6,
-                        fontWeight = FontWeight.Bold
-                    )
-// プロトタイプ ----------------------------------------------------------- END
+                    Spacer(modifier = Modifier.weight(1f))
                 }
             }
         }
     ) { innerPadding ->
         if(cookingRecords.itemCount > 0) {
-            LazyColumn(
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(innerPadding)
                     .padding(top = 8.dp)
                     .consumedWindowInsets(innerPadding),
-                state = lazyListState
+                state = lazyGridState
             ) {
                 items(cookingRecords.itemCount) { index ->
                     cookingRecords[index]?.let {
                         val encodeUrl = URLEncoder.encode(it.imageUrl, StandardCharsets.UTF_8.toString())
-                        RecipeListItem(it) {
+                        MyRecipeListItem(
+                            cookingRecord = it,
+                            modifier = Modifier
+                                .padding(all = 4.dp)
+                                .size(halfScreenWidth)
+                        ) {
                             navController.navigate(
                                 NavigationRoute.RecipeDetail.route +
                                         "/$encodeUrl" +
@@ -144,19 +149,10 @@ fun RecipeListScreen(
     }
 }
 
-@Preview(uiMode = UI_MODE_NIGHT_YES)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun PreviewRecipeListScreenDark(){
+fun PreviewMyRecipeListScreenDark(){
     MaterialTheme {
-        RecipeListScreen(navController = NavController(LocalContext.current))
-    }
-}
-
-
-@Preview(uiMode = UI_MODE_NIGHT_NO)
-@Composable
-fun PreviewRecipeListScreenLight(){
-    MaterialTheme {
-        RecipeListScreen(navController = NavController(LocalContext.current))
+        MyRecipeListScreen(navController = NavController(LocalContext.current))
     }
 }
