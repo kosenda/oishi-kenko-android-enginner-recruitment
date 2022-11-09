@@ -1,17 +1,30 @@
 package com.oishikenko.android.recruitment.feature.navigation
 
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.oishikenko.android.recruitment.feature.list.RecipeDetailScreen
 import com.oishikenko.android.recruitment.feature.list.RecipeListScreen
 
 @Composable
 fun Navigation() {
     val navController = rememberNavController()
+
+    val systemUiController = rememberSystemUiController()
+    val systemUiColor = MaterialTheme.colors.background
+    SideEffect {
+        systemUiController.run {
+            setStatusBarColor(systemUiColor)
+            setNavigationBarColor(systemUiColor)
+        }
+    }
+
     NavHost(
         navController = navController,
         startDestination =  NavigationRoute.RecipeList.route
